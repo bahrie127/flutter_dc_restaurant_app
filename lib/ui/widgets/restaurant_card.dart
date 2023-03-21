@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dicoding_restaurant_app/common/constants.dart';
 
+import 'package:flutter_dicoding_restaurant_app/common/constants.dart';
 import 'package:flutter_dicoding_restaurant_app/data/restaurant_model.dart';
 import 'package:flutter_dicoding_restaurant_app/ui/pages/detail_page.dart';
 
@@ -9,16 +9,25 @@ class RestaurantCard extends StatelessWidget {
   const RestaurantCard({
     Key? key,
     required this.restaurant,
+    required this.handleCallback,
   }) : super(key: key);
   final Restaurant restaurant;
+  final void Function() handleCallback;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () =>
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return DetailPage(restaurant: restaurant);
-      })),
+      onTap: () async{
+        await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return DetailPage(restaurant: restaurant);
+            },
+          ),
+        );
+        handleCallback();
+      },
       child: Card(
         color: Colors.grey.shade300,
         shape: RoundedRectangleBorder(

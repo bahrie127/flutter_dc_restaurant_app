@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dicoding_restaurant_app/cubit/list_restaurant/list_restaurant_cubit.dart';
 import 'package:flutter_dicoding_restaurant_app/data/restaurant_model.dart';
 import 'package:flutter_dicoding_restaurant_app/data/restaurant_service.dart';
+import 'package:flutter_dicoding_restaurant_app/ui/pages/favorite_page.dart';
 import 'package:flutter_dicoding_restaurant_app/ui/pages/search_page.dart';
 import 'package:flutter_dicoding_restaurant_app/ui/widgets/restaurant_card.dart';
 
@@ -17,6 +18,20 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+  }
+
+  void handleOnTap(int index) {
+    if (index == 1) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return const FavoritePage();
+      }));
+    }
+
+    if (index == 2) {
+      // Navigator.push(context, MaterialPageRoute(builder: (context){
+      //   return const Favo();
+      // }));
+    }
   }
 
   @override
@@ -68,7 +83,11 @@ class _HomePageState extends State<HomePage> {
                       return ListView.builder(
                         itemBuilder: (context, index) {
                           return RestaurantCard(
-                              restaurant: state.restaurants[index]);
+                            restaurant: state.restaurants[index],
+                            handleCallback: () {
+                              
+                            },
+                          );
                         },
                         itemCount: state.restaurants.length,
                       );
@@ -83,6 +102,24 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_filled),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            label: 'Favorite',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Setting',
+          ),
+        ],
+        onTap: handleOnTap,
+        currentIndex: 0,
       ),
     );
   }

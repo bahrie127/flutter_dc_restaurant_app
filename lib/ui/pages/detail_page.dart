@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dicoding_restaurant_app/common/constants.dart';
 import 'package:flutter_dicoding_restaurant_app/cubit/detail_restaurant/detail_restaurant_cubit.dart';
+import 'package:flutter_dicoding_restaurant_app/cubit/favorites_restaurant/favorite_detail/favorite_detail_cubit.dart';
+import 'package:flutter_dicoding_restaurant_app/cubit/favorites_restaurant/favorites_cubit.dart';
 import 'package:flutter_dicoding_restaurant_app/data/restaurant_detail_model.dart';
 
 import 'package:flutter_dicoding_restaurant_app/data/restaurant_model.dart';
@@ -25,6 +27,7 @@ class _DetailPageState extends State<DetailPage> {
     context
         .read<DetailRestaurantCubit>()
         .getDetailRestaurant(widget.restaurant.id!);
+    context.read<FavoriteDetailCubit>().getFavoriteById(widget.restaurant.id!);
     super.initState();
   }
 
@@ -86,36 +89,65 @@ class _DetailPageState extends State<DetailPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          restaurant.name!,
-                          overflow: TextOverflow.clip,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 24,
+                        Expanded(
+                          child: Text(
+                            restaurant.name!,
+                            overflow: TextOverflow.clip,
+                            maxLines: 2,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24,
+                            ),
                           ),
                         ),
-                        Row(
-                          children: [
-                            const Icon(
-                              Icons.star,
-                              color: Colors.orange,
-                            ),
-                            const SizedBox(
-                              width: 4,
-                            ),
-                            Text('${restaurant.rating}')
-                          ],
+                        IconButton(
+                          onPressed: () {
+                            context
+                                .read<FavoriteDetailCubit>()
+                                .clickFavorite(widget.restaurant);
+                          },
+                          icon: BlocBuilder<FavoriteDetailCubit,
+                              FavoriteDetailState>(
+                            builder: (context, state) {
+                              if (state is FavoriteDetailFound) {
+                                return const Icon(
+                                  Icons.favorite,
+                                  color: Colors.orange,
+                                );
+                              }
+                              return const Icon(
+                                Icons.favorite_border,
+                              );
+                            },
+                          ),
                         ),
                       ],
                     ),
                     const SizedBox(
                       height: 4,
                     ),
-                    Text(restaurant.city!,
-                        overflow: TextOverflow.clip,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                        )),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.star,
+                          color: Colors.orange,
+                        ),
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        Text('${restaurant.rating}'),
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        Text(
+                          restaurant.city!,
+                          overflow: TextOverflow.clip,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),

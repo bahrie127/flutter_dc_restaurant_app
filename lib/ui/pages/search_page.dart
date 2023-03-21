@@ -88,7 +88,9 @@ class _SearchPageState extends State<SearchPage> {
                       return ListView.builder(
                         itemBuilder: (context, index) {
                           return RestaurantCard(
-                              restaurant: state.restaurants[index]);
+                            restaurant: state.restaurants[index],
+                            handleCallback: () {},
+                          );
                         },
                         itemCount: state.restaurants.length,
                       );
