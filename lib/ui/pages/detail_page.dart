@@ -1,9 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dicoding_restaurant_app/common/constants.dart';
+import 'package:flutter_dicoding_restaurant_app/cubit/detail_restaurant/detail_restaurant_cubit.dart';
+import 'package:flutter_dicoding_restaurant_app/data/restaurant_detail_model.dart';
 
 import 'package:flutter_dicoding_restaurant_app/data/restaurant_model.dart';
 import 'package:flutter_dicoding_restaurant_app/ui/widgets/menu_card.dart';
 
-class DetailPage extends StatelessWidget {
+class DetailPage extends StatefulWidget {
   const DetailPage({
     Key? key,
     required this.restaurant,
@@ -11,38 +16,59 @@ class DetailPage extends StatelessWidget {
   final Restaurant restaurant;
 
   @override
+  State<DetailPage> createState() => _DetailPageState();
+}
+
+class _DetailPageState extends State<DetailPage> {
+  @override
+  void initState() {
+    context
+        .read<DetailRestaurantCubit>()
+        .getDetailRestaurant(widget.restaurant.id!);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text(restaurant.name!)),
-        body: SafeArea(
-          child: Column(
-            children: [
-              Hero(
-                tag: restaurant.pictureId!,
-                child: AnimatedContainer(
-                  width: double.infinity,
-                  height: 200,
-                  duration: const Duration(milliseconds: 300),
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(
-                        restaurant.pictureId!,
-                      ),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(child: details(restaurant)),
-            ],
-          ),
+        appBar: AppBar(title: Text(widget.restaurant.name!)),
+        body: BlocBuilder<DetailRestaurantCubit, DetailRestaurantState>(
+          builder: (context, state) {
+            if (state is DetailRestaurantLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (state is DetailRestaurantError) {
+              return Center(
+                child: Text(state.message),
+              );
+            }
+            if (state is DetailRestaurantLoaded) {
+              return SafeArea(
+                child: details(state.detail),
+              );
+            }
+
+            return const Center(
+              child: Text('data not found'),
+            );
+          },
         ));
   }
 
-  Widget details(Restaurant restaurant) {
+  Widget details(RestaurantDetail restaurant) {
     return ListView(
       physics: const BouncingScrollPhysics(),
       children: [
+        SizedBox(
+          child: CachedNetworkImage(
+            width: double.infinity,
+            height: 200,
+            imageUrl: '${Constants.imagePath}${restaurant.pictureId!}',
+            fit: BoxFit.cover,
+          ),
+        ),
         Container(
           padding: const EdgeInsets.only(
             left: 30,
@@ -57,13 +83,30 @@ class DetailPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      restaurant.name!,
-                      overflow: TextOverflow.clip,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          restaurant.name!,
+                          overflow: TextOverflow.clip,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.star,
+                              color: Colors.orange,
+                            ),
+                            const SizedBox(
+                              width: 4,
+                            ),
+                            Text('${restaurant.rating}')
+                          ],
+                        ),
+                      ],
                     ),
                     const SizedBox(
                       height: 4,
@@ -124,7 +167,7 @@ class DetailPage extends StatelessWidget {
     );
   }
 
-  Widget foodList(Restaurant restaurant) {
+  Widget foodList(RestaurantDetail restaurant) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -156,7 +199,7 @@ class DetailPage extends StatelessWidget {
     );
   }
 
-  Widget drinkList(Restaurant restaurant) {
+  Widget drinkList(RestaurantDetail restaurant) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

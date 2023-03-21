@@ -2,9 +2,15 @@ import 'dart:convert';
 
 class RestaurantModel {
   RestaurantModel({
+    this.error,
+    this.message,
+    this.count,
     this.restaurants,
   });
 
+  bool? error;
+  String? message;
+  int? count;
   List<Restaurant>? restaurants;
 
   factory RestaurantModel.fromRawJson(String str) =>
@@ -14,6 +20,9 @@ class RestaurantModel {
 
   factory RestaurantModel.fromJson(Map<String, dynamic> json) =>
       RestaurantModel(
+        error: json["error"],
+        message: json["message"],
+        count: json["count"],
         restaurants: json["restaurants"] == null
             ? []
             : List<Restaurant>.from(
@@ -24,13 +33,12 @@ class RestaurantModel {
       );
 
   Map<String, dynamic> toJson() => {
+        "error": error,
+        "message": message,
+        "count": count,
         "restaurants": restaurants == null
             ? []
-            : List<dynamic>.from(
-                restaurants!.map(
-                  (x) => x.toJson(),
-                ),
-              ),
+            : List<dynamic>.from(restaurants!.map((x) => x.toJson())),
       };
 }
 
@@ -42,7 +50,6 @@ class Restaurant {
     this.pictureId,
     this.city,
     this.rating,
-    this.menus,
   });
 
   String? id;
@@ -51,7 +58,6 @@ class Restaurant {
   String? pictureId;
   String? city;
   double? rating;
-  Menus? menus;
 
   factory Restaurant.fromRawJson(String str) =>
       Restaurant.fromJson(json.decode(str));
@@ -65,7 +71,6 @@ class Restaurant {
         pictureId: json["pictureId"],
         city: json["city"],
         rating: json["rating"]?.toDouble(),
-        menus: json["menus"] == null ? null : Menus.fromJson(json["menus"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -75,58 +80,5 @@ class Restaurant {
         "pictureId": pictureId,
         "city": city,
         "rating": rating,
-        "menus": menus?.toJson(),
-      };
-}
-
-class Menus {
-  Menus({
-    this.foods,
-    this.drinks,
-  });
-
-  List<Drink>? foods;
-  List<Drink>? drinks;
-
-  factory Menus.fromRawJson(String str) => Menus.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory Menus.fromJson(Map<String, dynamic> json) => Menus(
-        foods: json["foods"] == null
-            ? []
-            : List<Drink>.from(json["foods"]!.map((x) => Drink.fromJson(x))),
-        drinks: json["drinks"] == null
-            ? []
-            : List<Drink>.from(json["drinks"]!.map((x) => Drink.fromJson(x))),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "foods": foods == null
-            ? []
-            : List<dynamic>.from(foods!.map((x) => x.toJson())),
-        "drinks": drinks == null
-            ? []
-            : List<dynamic>.from(drinks!.map((x) => x.toJson())),
-      };
-}
-
-class Drink {
-  Drink({
-    this.name,
-  });
-
-  String? name;
-
-  factory Drink.fromRawJson(String str) => Drink.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory Drink.fromJson(Map<String, dynamic> json) => Drink(
-        name: json["name"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "name": name,
       };
 }

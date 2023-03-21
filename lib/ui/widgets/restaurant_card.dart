@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dicoding_restaurant_app/common/constants.dart';
 
 import 'package:flutter_dicoding_restaurant_app/data/restaurant_model.dart';
 import 'package:flutter_dicoding_restaurant_app/ui/pages/detail_page.dart';
@@ -35,8 +37,8 @@ class RestaurantCard extends StatelessWidget {
                 tag: restaurant.pictureId!,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20),
-                  child: Image.network(
-                    restaurant.pictureId!,
+                  child: CachedNetworkImage(
+                    imageUrl: '${Constants.imagePath}${restaurant.pictureId!}',
                     width: 100,
                     height: 80,
                     fit: BoxFit.cover,

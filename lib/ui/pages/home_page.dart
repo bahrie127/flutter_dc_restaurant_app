@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dicoding_restaurant_app/cubit/list_restaurant/list_restaurant_cubit.dart';
 import 'package:flutter_dicoding_restaurant_app/data/restaurant_model.dart';
 import 'package:flutter_dicoding_restaurant_app/data/restaurant_service.dart';
+import 'package:flutter_dicoding_restaurant_app/ui/pages/search_page.dart';
 import 'package:flutter_dicoding_restaurant_app/ui/widgets/restaurant_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -11,16 +14,29 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late Future<RestaurantModel> restaurantModel;
   @override
   void initState() {
-    restaurantModel = RestaurantService().readRestaurantJson();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('List Restaurant'),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const SearchPage();
+                }));
+              },
+              icon: const Icon(Icons.search)),
+          const SizedBox(
+            width: 16,
+          )
+        ],
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -34,28 +50,33 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               Expanded(
-                child: FutureBuilder(
-                  future: restaurantModel,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.hasData) {
-                        return ListView.builder(
-                          itemBuilder: (context, index) {
-                            return RestaurantCard(
-                                restaurant: snapshot.data!.restaurants![index]);
-                          },
-                          itemCount: snapshot.data!.restaurants!.length,
-                        );
-                      } else {
-                        return const Center(
-                          child: Text('no data'),
-                        );
-                      }
-                    } else {
+                child: BlocBuilder<ListRestaurantCubit, ListRestaurantState>(
+                  builder: (context, state) {
+                    if (state is ListRestaurantLoading) {
                       return const Center(
                         child: CircularProgressIndicator(),
                       );
                     }
+
+                    if (state is ListRestaurantError) {
+                      return Center(
+                        child: Text(state.message),
+                      );
+                    }
+
+                    if (state is ListRestaurantLoaded) {
+                      return ListView.builder(
+                        itemBuilder: (context, index) {
+                          return RestaurantCard(
+                              restaurant: state.restaurants[index]);
+                        },
+                        itemCount: state.restaurants.length,
+                      );
+                    }
+
+                    return const Center(
+                      child: Text('no data'),
+                    );
                   },
                 ),
               ),
