@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
+
 class RestaurantModel {
   RestaurantModel({
     this.error,
@@ -42,7 +44,7 @@ class RestaurantModel {
       };
 }
 
-class Restaurant {
+class Restaurant extends Equatable {
   Restaurant({
     this.id,
     this.name,
@@ -51,6 +53,16 @@ class Restaurant {
     this.city,
     this.rating,
   });
+
+  @override
+  List<Object?> get props => [
+        id,
+        name,
+        description,
+        pictureId,
+        city,
+        rating,
+      ];
 
   String? id;
   String? name;
