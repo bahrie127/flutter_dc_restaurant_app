@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dicoding_restaurant_app/cubit/list_restaurant/list_restaurant_cubit.dart';
 import 'package:flutter_dicoding_restaurant_app/cubit/search_restaurant/search_restaurant_cubit.dart';
 import 'package:flutter_dicoding_restaurant_app/ui/widgets/restaurant_card.dart';
 

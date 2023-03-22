@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dicoding_restaurant_app/common/constants.dart';
 import 'package:flutter_dicoding_restaurant_app/cubit/detail_restaurant/detail_restaurant_cubit.dart';
 import 'package:flutter_dicoding_restaurant_app/cubit/favorites_restaurant/favorite_detail/favorite_detail_cubit.dart';
-import 'package:flutter_dicoding_restaurant_app/cubit/favorites_restaurant/favorites_cubit.dart';
 import 'package:flutter_dicoding_restaurant_app/data/restaurant_detail_model.dart';
 
 import 'package:flutter_dicoding_restaurant_app/data/restaurant_model.dart';

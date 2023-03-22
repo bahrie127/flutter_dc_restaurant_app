@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dicoding_restaurant_app/ui/pages/home_page.dart';
+import 'package:flutter_dicoding_restaurant_app/ui/pages/search_page.dart';
 
 import '../../cubit/daily_reminder/daily_reminder_cubit.dart';
 import 'favorite_page.dart';
@@ -13,8 +14,6 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
-
-  
   void handleOnTap(int index) {
     if (index == 1) {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -38,7 +37,21 @@ class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Setting')),
+      appBar: AppBar(
+        title: const Text('Setting'),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const SearchPage();
+                }));
+              },
+              icon: const Icon(Icons.search)),
+          const SizedBox(
+            width: 16,
+          )
+        ],
+      ),
       body: Container(
         padding: const EdgeInsets.symmetric(
           horizontal: 20,
@@ -66,7 +79,6 @@ class _SettingPageState extends State<SettingPage> {
                 const Spacer(),
                 BlocBuilder<DailyReminderCubit, DailyReminderState>(
                   builder: (context, state) {
-
                     return Switch(
                       activeColor: Colors.orange,
                       inactiveThumbColor: Colors.grey,

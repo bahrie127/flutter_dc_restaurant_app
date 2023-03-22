@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dicoding_restaurant_app/data/restaurant_model.dart';
 import 'package:flutter_dicoding_restaurant_app/ui/pages/detail_page.dart';

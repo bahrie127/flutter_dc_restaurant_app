@@ -1,5 +1,6 @@
-import 'package:bloc/bloc.dart';
+
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_dicoding_restaurant_app/data/db/favorites_db.dart';
 import 'package:flutter_dicoding_restaurant_app/data/restaurant_model.dart';

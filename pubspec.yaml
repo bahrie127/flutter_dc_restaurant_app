@@ -37,7 +37,6 @@ dependencies:
   flutter_bloc: ^8.1.2
   flutter_local_notifications: ^13.0.0
   http: ^0.13.5
-  intl: ^0.18.0
   rxdart: ^0.27.7
   shared_preferences: ^2.0.20
   sqflite: ^2.2.6

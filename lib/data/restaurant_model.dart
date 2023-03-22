@@ -44,6 +44,7 @@ class RestaurantModel {
       };
 }
 
+// ignore: must_be_immutable
 class Restaurant extends Equatable {
   Restaurant({
     this.id,

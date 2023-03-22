@@ -13,7 +13,7 @@ import 'package:flutter_dicoding_restaurant_app/data/db/daily_reminder_preferenc
 import 'package:flutter_dicoding_restaurant_app/data/db/favorites_db.dart';
 import 'package:flutter_dicoding_restaurant_app/data/restaurant_service.dart';
 import 'package:flutter_dicoding_restaurant_app/ui/pages/home_page.dart';
-import 'package:flutter_dicoding_restaurant_app/ui/pages/search_page.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {

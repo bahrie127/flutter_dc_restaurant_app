@@ -1,7 +1,8 @@
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
-import 'package:bloc/bloc.dart';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dicoding_restaurant_app/common/utils/date_time_utils.dart';
 
 import 'package:flutter_dicoding_restaurant_app/data/db/daily_reminder_preferences.dart';
