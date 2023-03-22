@@ -106,19 +106,38 @@ class _DetailPageState extends State<DetailPage> {
                                 .read<FavoriteDetailCubit>()
                                 .clickFavorite(widget.restaurant);
                           },
-                          icon: BlocBuilder<FavoriteDetailCubit,
+                          icon: BlocListener<FavoriteDetailCubit,
                               FavoriteDetailState>(
-                            builder: (context, state) {
-                              if (state is FavoriteDetailFound) {
-                                return const Icon(
-                                  Icons.favorite,
-                                  color: Colors.orange,
-                                );
+                            listener: (context, state) {
+                              if (state is FavoriteDetailSuccess) {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content: Text(state.message),
+                                  backgroundColor: Colors.orange,
+                                ));
                               }
-                              return const Icon(
-                                Icons.favorite_border,
-                              );
+                              if (state is FavoriteDetailError) {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content: Text(state.message),
+                                  backgroundColor: Colors.red,
+                                ));
+                              }
                             },
+                            child: BlocBuilder<FavoriteDetailCubit,
+                                FavoriteDetailState>(
+                              builder: (context, state) {
+                                if (state is FavoriteDetailFound) {
+                                  return const Icon(
+                                    Icons.favorite,
+                                    color: Colors.orange,
+                                  );
+                                }
+                                return const Icon(
+                                  Icons.favorite_border,
+                                );
+                              },
+                            ),
                           ),
                         ),
                       ],

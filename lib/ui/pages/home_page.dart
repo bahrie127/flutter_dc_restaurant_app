@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dicoding_restaurant_app/common/utils/notification_utils.dart';
 import 'package:flutter_dicoding_restaurant_app/cubit/list_restaurant/list_restaurant_cubit.dart';
 import 'package:flutter_dicoding_restaurant_app/data/restaurant_model.dart';
 import 'package:flutter_dicoding_restaurant_app/data/restaurant_service.dart';
+import 'package:flutter_dicoding_restaurant_app/ui/pages/detail_page.dart';
 import 'package:flutter_dicoding_restaurant_app/ui/pages/favorite_page.dart';
 import 'package:flutter_dicoding_restaurant_app/ui/pages/search_page.dart';
+import 'package:flutter_dicoding_restaurant_app/ui/pages/setting_page.dart';
 import 'package:flutter_dicoding_restaurant_app/ui/widgets/restaurant_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,8 +18,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  NotificationsUtils notificationsUtils = NotificationsUtils();
   @override
   void initState() {
+    notificationsUtils.configureSelectedNotificationSubject(context);
     super.initState();
   }
 
@@ -28,9 +33,9 @@ class _HomePageState extends State<HomePage> {
     }
 
     if (index == 2) {
-      // Navigator.push(context, MaterialPageRoute(builder: (context){
-      //   return const Favo();
-      // }));
+      Navigator.push(context, MaterialPageRoute(builder: (context){
+        return const SettingPage();
+      }));
     }
   }
 
